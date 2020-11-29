@@ -6,9 +6,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-
 <body>
+    <div>
+        <p>Você está num supermercado e está na fila do caixa para comprar alguns produtos. Assim que você termina de passar as compras pelo caixa, se lembra que tem várias moedas em seu bolso, algumas repetidas, e fica pensando se com elas dá para pagar exatamente o valor das compras (para assim se livrar destas moedas e ficar com os bolsos mais leves). 
+           Você consegue pagar o valor exato da conta usando estas moedas?</p>
+        <!-- <br> -->
+        <p>Insira o valor da compra e a quantidade das moedas que você têm no bolso.</p>
+        <input id="total" type="number" min="0" placeholder="Valor da compra"/>
+        <div class="row">
+            <div class="inputs">
+                <img width="100px" height="100px" src="./imgs/1centavo.jpg"/>
+                <input id="qtd1" type="number" min="0" value="0" placeholder="Quantidade"/>
+            </div>
+            <div class="inputs">
+                <img width="100px" height="100px" src="./imgs/5centavos.jpg"/>
+                <input id="qtd5" type="number" min="0" value="0" placeholder="Quantidade"/>
+            </div>
+            <div class="inputs">
+                <img width="100px" height="100px" src="./imgs/10centavos.jpg"/>
+                <input id="qtd10" type="number" min="0" value="0" placeholder="Quantidade"/>
+            </div>
+            <div class="inputs">
+                <img width="100px" height="100px" src="./imgs/25centavos.jpg"/>
+                <input id="qtd25" type="number" min="0" value="0" placeholder="Quantidade"/>
+            </div>
+            <div class="inputs">
+                <img width="100px" height="100px" src="./imgs/50centavos.jpg"/>
+                <input id="qtd50" type="number" min="0" value="0" placeholder="Quantidade"/>
+            </div>
+            <div class="inputs">
+                <img width="100px" height="100px" src="./imgs/1real.jpg"/>
+                <input id="qtd100" type="number" min="0" value="0" placeholder="Quantidade"/>
+            </div>
+        </div>
+        <button class="button" onclick="solve()">Calcular</button>
+        <div id="solution"></div>
+        </div>
+
     <script>
+        function solve(){
+            let sum = document.getElementById('total').value * 100;
+            let qtd1 = document.getElementById('qtd1').value;
+            let qtd5 = document.getElementById('qtd5').value;
+            let qtd10 = document.getElementById('qtd10').value;
+            let qtd25 = document.getElementById('qtd25').value;
+            let qtd50 = document.getElementById('qtd50').value;
+            let qtd100 = document.getElementById('qtd100').value;
+            let array = [];
+            
+            for(let i = 0; i < qtd1; i++) array.push(1);
+            for(let i = 0; i < qtd5; i++) array.push(5);
+            for(let i = 0; i < qtd10; i++) array.push(10);
+            for(let i = 0; i < qtd25; i++) array.push(25);
+            for(let i = 0; i < qtd50; i++) array.push(50);
+            for(let i = 0; i < qtd100; i++) array.push(100);
+            
+            subsetSum(array, sum);
+        }
+
         function subsetSum(inputSet, sum) {
             let rows = inputSet.length;
             let cols = sum;
@@ -37,7 +92,11 @@
             }
 
             if (!table[rows][cols]) {
-                console.log("Sem solução");
+                let divSolution = document.getElementById('solution');
+                divSolution.innerHTML = '';
+                let text = document.createElement('p');
+                text.textContent = 'Com a(s) moeda(s) que você possui não é possível pagar a compra.'
+                divSolution.appendChild(text); 
             } else {
                 printSolution(inputSet, sum, table);
             }
@@ -54,12 +113,76 @@
                 solution.push(inputSet[i - 1]);
                 j = j - inputSet[i - 1];
             }
-            console.log(solution);
-        }
-        window.onload = () => {
-            subsetSum([25,10,5,1], 20);
+            
+            let imgs = {
+                1: './imgs/1centavo.jpg',
+                5: './imgs/5centavos.jpg',
+                10: './imgs/10centavos.jpg',
+                25: './imgs/25centavos.jpg',
+                50: './imgs/50centavos.jpg',
+                100: './imgs/1real.jpg'
+            }
+
+            let divSolution = document.getElementById('solution');
+            divSolution.innerHTML = '';
+
+            let text = document.createElement('p');
+            text.textContent = 'Você pode pagar a compra com a(s) moeda(s) abaixo.'
+            divSolution.appendChild(text); 
+
+            for(let i = 0; i < solution.length; i++){
+                let image = document.createElement('img');
+                image.setAttribute('src', imgs[solution[i]]);
+                image.setAttribute('width', '100px');
+                image.setAttribute('height', '100px');
+                image.style.margin = '20px';
+
+                divSolution.appendChild(image);
+            }
         }
     </script>
 </body>
 
 </html>
+
+<style>
+
+input {
+    padding: 12px 20px;
+    /* margin: 8px 0; */
+    margin: 10px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 38px;
+    color: white;
+    padding: 9px 25px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.inputs{
+    margin-top: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+p {
+    font-family: Sans-serif;
+    text-justify: auto;
+}
+</style>
