@@ -12,7 +12,8 @@
            Você consegue pagar o valor exato da conta usando estas moedas?</p>
         <!-- <br> -->
         <p>Insira o valor da compra e a quantidade das moedas que você têm no bolso.</p>
-        <input id="total" type="number" min="0" placeholder="Valor da compra"/>
+        <p>O valor deve estar em reais, com o valor dos centavos separado por ponto (ex: 2.30 ou 0.05).</p>
+        <input id="total" type="number" min="0" step=".01" placeholder="Valor da compra"/>
         <div class="row">
             <div class="inputs">
                 <img width="100px" height="100px" src="./imgs/1centavo.png"/>
@@ -45,7 +46,7 @@
 
     <script>
         function solve(){
-            let sum = document.getElementById('total').value * 100;
+            let sum = Math.ceil(document.getElementById('total').value * 100);
             let qtd1 = document.getElementById('qtd1').value;
             let qtd5 = document.getElementById('qtd5').value;
             let qtd10 = document.getElementById('qtd10').value;
@@ -184,5 +185,10 @@ input {
 p {
     font-family: Sans-serif;
     text-justify: auto;
+}
+
+body {
+    width: 95%;
+    margin: auto;
 }
 </style>
